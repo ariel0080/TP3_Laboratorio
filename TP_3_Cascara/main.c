@@ -18,7 +18,8 @@ int main()
         printf("2- Borrar pel%ccula\n",ii);
         printf("3- Modificar pel%ccula\n",ii);
         printf("4- Generar p%cgina web\n",aa);
-        printf("5- Salir\n");
+        printf("5- Listar pel%cculas\n",ii);
+        printf("6- Salir\n");
 
         scanf("%d",&opcion);
 
@@ -33,6 +34,8 @@ int main()
             case 4:
                break;
             case 5:
+               break;
+            case 6:
                 seguir = 'n';
                 break;
         }

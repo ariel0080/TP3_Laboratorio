@@ -60,8 +60,9 @@ void inicializarLista(EMovie*);
 
 // FUNCIONES PARA TOMAR DATOS
 
-char* consulta(void);
+char* consulta(int);
 int stringAenteroPositivo(char*); // DEVUELVE -1 SI NO PUEDE HACER LA CONVERSION
+int ValidarEntero(int,int,int); // valida entre min y max y retorna dato o -1 si no valida
 
 //SETTERS - DEVUELVEN 1 SI FUE CORRECTO, 0 SI HAY ERROR
 

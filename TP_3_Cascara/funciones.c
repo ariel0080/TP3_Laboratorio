@@ -5,13 +5,23 @@
 
 
 
-// FUNCIONES PARA TOMAR DATOS
+// FUNCIONES PARA TOMAR DATOS Y VALIDAR
 
-char* consulta(void)
+int ValidarEntero(int min,int max,int dato)
+{
+    if(dato > min && dato < max)
+        {
+            return dato;
+        }
+    else return -1;
+}
+
+
+char* consulta(int caracteres)
 {
 
     char* dato;
-    fgets(dato,50,stdin);
+    fgets(dato,caracteres,stdin);
     int largo=0;
     while (dato[largo]!='\n')
         {
@@ -196,6 +206,69 @@ int get_EMovie_id(EMovie* lista, int posicion)
 
 int agregarPelicula(EMovie* movie)
 {
+    char* aux;
+    int indice;
+    int durac;
+    int punt;
+    indice=buscaEstadoLibre(movie);
+    if(indice!=-1)
+    {
+        printf("\nIngrese t%ctulo de la pel%ccula: ",ii,ii);
+        aux = consulta(20);
+        if(set_EMovie_titulo(movie,aux,indice)==1){set_EMovie_titulo(movie,aux,indice);}
+            else return 0;
+
+        printf("\nIngrese g%cnero de la pel%ccula: ",ee,ii);
+        aux = consulta(20);
+        if(set_EMovie_genero(movie,aux,indice)==1){set_EMovie_genero(movie,aux,indice);}
+            else return 0;
+
+        printf("\nIngrese duraci%cn de la pel%ccula: ",oo,ii); // en cada validacion
+        aux = consulta(20);
+        if(stringAenteroPositivo(aux)!=-1);
+        {
+            durac = stringAenteroPositivo(aux);
+            durac = ValidarEntero(0,300,durac);
+            if (durac!=-1)
+            {
+                if(set_EMovie_duracion(movie,durac,indice)==1){set_EMovie_duracion(movie,durac,indice);} else return 0;
+            }
+
+        } else return -1;
+
+        printf("\nIngrese descripci%cn de la pel%ccula: ",oo,ii);
+        aux = consulta(50);
+        if(set_EMovie_descripcion(movie,aux,indice)==1){set_EMovie_descripcion(movie,aux,indice);}
+        else return 0;
+
+        printf("\nIngrese puntaje de la pel%ccula: ",ii); // en cada validacion
+        aux = consulta(20);
+        if(stringAenteroPositivo(aux)!=-1);
+        {
+            punt = stringAenteroPositivo(aux);
+            punt = ValidarEntero(0,10,punt);
+            if (punt!=-1)
+            {
+                if(set_EMovie_puntaje(movie,punt,indice)==1){set_EMovie_duracion(movie,durac,indice);}
+                else return 0;
+            }
+
+        }else return -1;
+
+
+        printf("\nIngrese link de la im%cgen de la pel%ccula: ",aa,ii);
+        aux = consulta(50);
+        if(set_EMovie_linkImagen(movie,aux,indice)==1){set_EMovie_linkImagen(movie,aux,indice);}
+            else return 0;
+
+        if(set_EMovie_estado(movie,1,indice)==1){set_EMovie_estado(movie,1,indice);}
+            else return 0;
+
+        if(set_EMovie_id(movie,100+indice,indice)==1){set_EMovie_id(movie,100+indice,indice);}
+            else return 0;
+
+
+    }else return -1;
 
 }
 

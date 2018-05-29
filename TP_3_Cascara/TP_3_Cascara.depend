@@ -18,3 +18,22 @@
 
 1527542705 c:\users\abrinoli_mecon\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\get_set.h
 
+1527561803 source:c:\users\dell-e5430\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+	"estructuras.h"
+
+1527562189 c:\users\dell-e5430\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\funciones.h
+	"get_set.h"
+
+1527542705 c:\users\dell-e5430\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\get_set.h
+
+1527542523 c:\users\dell-e5430\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\estructuras.h
+
+1527561717 source:c:\users\dell-e5430\dropbox\facultad - estudio\inicio tecnicatura superior en programación\laboratoio de programacion 1\prog_y_lab_i\tp3\tp_3_cascara\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
