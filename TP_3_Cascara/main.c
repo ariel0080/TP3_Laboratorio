@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "funciones.h"
+#include "estructuras.h"
 
 
 
@@ -13,10 +14,11 @@ int main()
 
     while(seguir=='s')
     {
-        printf("1- Agregar pelicula\n");
-        printf("2- Borrar pelicula\n");
-        printf("3- Generar pagina web\n");
-        printf("4- Salir\n");
+        printf("1- Agregar pel%ccula\n",ii);
+        printf("2- Borrar pel%ccula\n",ii);
+        printf("3- Modificar pel%ccula\n",ii);
+        printf("4- Generar p%cgina web\n",aa);
+        printf("5- Salir\n");
 
         scanf("%d",&opcion);
 
@@ -29,6 +31,8 @@ int main()
             case 3:
                break;
             case 4:
+               break;
+            case 5:
                 seguir = 'n';
                 break;
         }
