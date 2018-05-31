@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "funciones.h"
-#include "estructuras.h"
+
 
 
 
@@ -20,12 +20,14 @@ int main()
         printf("4- Generar p%cgina web\n",aa);
         printf("5- Listar pel%cculas\n",ii);
         printf("6- Salir\n");
+        printf("7- Listar\n");
 
         scanf("%d",&opcion);
 
         switch(opcion)
         {
             case 1:
+                agregarPelicula(lista);
                 break;
             case 2:
                 break;
@@ -37,6 +39,9 @@ int main()
                break;
             case 6:
                 seguir = 'n';
+                break;
+            case 7:
+                ListarPeliculas(lista);
                 break;
         }
     }

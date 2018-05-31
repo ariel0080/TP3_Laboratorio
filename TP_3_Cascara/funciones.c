@@ -17,33 +17,99 @@ int ValidarEntero(int min,int max,int dato)
 }
 
 
-char* consulta(int caracteres)
+int consulta(char* dato, int caracteres)
 {
-
-    char* dato;
-    fgets(dato,caracteres,stdin);
+    if(dato!=NULL)
+    {
+        fflush(stdin);
+        fgets(dato,caracteres,stdin);
     int largo=0;
-    while (dato[largo]!='\n')
+    while (*(dato+largo)!='\n')
         {
         largo++;
         }
-    dato[largo]='\0';
-    return dato;
+    *(dato+largo)='\0';
+    return 0;
+    }
+    else return -1;
 }
+
 
 int stringAenteroPositivo(char* dato) // DEVUELVE EL ENTERO SI ESTA BIEN O -1 SI DA ERROR
 {
-    char* c;
-    c = &dato;
     int a=0;
 
-    while(isdigit(*(c+a)))
+    while(isdigit(*(dato+a)))
     {
         a++;
-        if(*(c+a)=='\0') {return atoi(dato);}
+        if(*(dato+a)=='\0') {return atoi(dato);}
     }
 
     return -1;
+}
+int pedirTitulo(EMovie* movie,int indice) //todas devuelven 0 si esta ok, -1 si hay error
+{
+    char aux[21];
+    printf("\nIngrese t%ctulo de la pel%ccula: ",ii,ii);
+    consulta(aux,50);
+    if(set_EMovie_titulo(movie,aux,indice)==1){set_EMovie_titulo(movie,aux,indice);}
+    else return 0;
+}
+int pedirGenero(EMovie* movie,int indice)
+{
+    char aux[21];
+    printf("\nIngrese g%cnero de la pel%ccula: ",ee,ii);
+    consulta(aux,50);
+    if(set_EMovie_genero(movie,aux,indice)==1){set_EMovie_genero(movie,aux,indice);}
+    else return 0;
+}
+int pedirDuracion(EMovie* movie,int indice)
+{
+    char aux[21];
+    printf("\nIngrese duraci%cn de la pel%ccula: <0-300 mins>",oo,ii);
+    consulta(aux,50);
+    while(stringAenteroPositivo(aux)==-1 || ValidarEntero(0,300,stringAenteroPositivo(aux))==-1)
+    {
+        printf("\nNO INGRESO DURACION VALIDA <0-300>\n");
+        printf("\nIngrese duraci%cn de la pel%ccula: <0-300 mins>",oo,ii);
+        consulta(aux,50);
+    }
+   set_EMovie_duracion(movie,stringAenteroPositivo(aux),indice);
+}
+int pedirDescripcion(EMovie* movie,int indice)
+{
+    char aux[51];
+    printf("\nIngrese descripci%cn de la pel%ccula: ",oo,ii);
+    consulta(aux,51);
+    if(set_EMovie_descripcion(movie,aux,indice)==1){set_EMovie_descripcion(movie,aux,indice);}
+    else return 0;
+}
+int pedirPuntaje(EMovie* movie,int indice)
+{
+    char auxp[21];
+    printf("\nIngrese puntaje de la pel%ccula: ",ii); // en cada validacion
+    consulta(auxp,20);
+    int p = stringAenteroPositivo(auxp);
+
+    while(p==-1 || ValidarEntero(0,10,p)==-1)
+    {
+        printf("\nNO INGRESO UN PUNTAJE VALIDO <1-10>\n");
+        printf("\nIngrese puntaje de la pel%ccula: ",ii); // en cada validacion
+        consulta(auxp,20);
+        p = stringAenteroPositivo(auxp);
+    }
+    printf("ESTO ES LO QUE INGRESA POR PUNTAJE: %d INDICE %d\n",p,indice);system("pause");
+    set_EMovie_duracion(movie,p,indice);
+    printf("LEo lo ingresado desde la estructura: %d indice: %d\n",movie[indice].puntaje,indice);system("pause");
+}
+int pedirLink(EMovie* movie,int indice)
+{
+    char aux[51];
+    printf("\nIngrese link de la im%cgen de la pel%ccula: ",aa,ii);
+    consulta(aux,50);
+    if(set_EMovie_linkImagen(movie,aux,indice)==1){set_EMovie_linkImagen(movie,aux,indice);}
+    else return 0;
+
 }
 // INICIALIZAR Y BUSQUEDA DE ESTADO LIBRE
 
@@ -72,7 +138,7 @@ void inicializarLista(EMovie* lista)
 }
 
 
-//SETTERS (VALIDACION DENTRO DE LOS MISMOS)
+//SETTERS
 
 int set_EMovie_titulo(EMovie* lista, char* titulo,int posicion)
 {
@@ -150,30 +216,27 @@ int set_EMovie_id(EMovie* lista, int id, int posicion)
 
 //GETTERS
 
-char* get_EMovie_linkImagen(EMovie* lista,int posicion)
+void get_EMovie_linkImagen(EMovie* lista,int posicion, char* l)
 {
-    char* link;
+    strcpy(l,(lista+posicion)->linkImagen);
+}
+void get_EMovie_genero(EMovie* lista,int posicion,char* g)
+{
 
-    strcpy(link,(lista+posicion)->linkImagen);
-    return link;
+    strcpy(g,(lista+posicion)->genero);
+
 }
-char* get_EMovie_genero(EMovie* lista,int posicion)
+void get_EMovie_descripcion(EMovie* lista, int posicion, char* d)
 {
-    char* gen;
-    strcpy(gen,(lista+posicion)->genero);
-    return gen;
+
+    strcpy(d,(lista+posicion)->descripcion);
+
 }
-char* get_EMovie_descripcion(EMovie* lista, int posicion)
+void get_EMovie_titulo(EMovie* lista,int posicion,char* t)
 {
-    char* desc;
-    strcpy(desc,(lista+posicion)->descripcion);
-    return desc;
-}
-char* get_EMovie_titulo(EMovie* lista,int posicion)
-{
-    char* tit;
-    strcpy(tit,(lista+posicion)->titulo);
-    return tit;
+
+    strcpy(t,(lista+posicion)->titulo);
+
 
 }
 int get_EMovie_duracion(EMovie* lista,int posicion)
@@ -202,73 +265,61 @@ int get_EMovie_id(EMovie* lista, int posicion)
     return i;
 }
 
+//LISTAR PELICULAS
+
+void ListarPeliculas(EMovie* movie)
+{
+
+    for(int i=0;i<CANTIDAD;i++)
+    {
+        if(get_EMovie_estado(movie,i)==1)
+        {
+            char t[20];
+            char g[20];
+            char d[51];
+            int du,pun,id;
+
+            get_EMovie_titulo(movie,i,t);printf("Titulo: %s\n",t);
+            get_EMovie_genero(movie,i,g);printf("Genero: %s\n",g);
+            get_EMovie_descripcion(movie,i,d);printf("Descripcion: %s\n",d);
+            du =get_EMovie_duracion(movie,i);printf("Duracion: %d\n",du);
+            pun=get_EMovie_puntaje(movie,i);printf("Calificacion: %d\n",pun);
+            id=get_EMovie_id(movie,i);printf("ID: %d\n\n",id);
+
+
+
+        }
+    }
+}
+
 // FUNCIONES DEL MENU
 
 int agregarPelicula(EMovie* movie)
 {
-    char* aux;
     int indice;
-    int durac;
-    int punt;
     indice=buscaEstadoLibre(movie);
     if(indice!=-1)
     {
-        printf("\nIngrese t%ctulo de la pel%ccula: ",ii,ii);
-        aux = consulta(20);
-        if(set_EMovie_titulo(movie,aux,indice)==1){set_EMovie_titulo(movie,aux,indice);}
-            else return 0;
-
-        printf("\nIngrese g%cnero de la pel%ccula: ",ee,ii);
-        aux = consulta(20);
-        if(set_EMovie_genero(movie,aux,indice)==1){set_EMovie_genero(movie,aux,indice);}
-            else return 0;
-
-        printf("\nIngrese duraci%cn de la pel%ccula: ",oo,ii); // en cada validacion
-        aux = consulta(20);
-        if(stringAenteroPositivo(aux)!=-1);
-        {
-            durac = stringAenteroPositivo(aux);
-            durac = ValidarEntero(0,300,durac);
-            if (durac!=-1)
-            {
-                if(set_EMovie_duracion(movie,durac,indice)==1){set_EMovie_duracion(movie,durac,indice);} else return 0;
-            }
-
-        } else return -1;
-
-        printf("\nIngrese descripci%cn de la pel%ccula: ",oo,ii);
-        aux = consulta(50);
-        if(set_EMovie_descripcion(movie,aux,indice)==1){set_EMovie_descripcion(movie,aux,indice);}
-        else return 0;
-
-        printf("\nIngrese puntaje de la pel%ccula: ",ii); // en cada validacion
-        aux = consulta(20);
-        if(stringAenteroPositivo(aux)!=-1);
-        {
-            punt = stringAenteroPositivo(aux);
-            punt = ValidarEntero(0,10,punt);
-            if (punt!=-1)
-            {
-                if(set_EMovie_puntaje(movie,punt,indice)==1){set_EMovie_duracion(movie,durac,indice);}
-                else return 0;
-            }
-
-        }else return -1;
-
-
-        printf("\nIngrese link de la im%cgen de la pel%ccula: ",aa,ii);
-        aux = consulta(50);
-        if(set_EMovie_linkImagen(movie,aux,indice)==1){set_EMovie_linkImagen(movie,aux,indice);}
-            else return 0;
+        pedirTitulo(movie,indice);
+        pedirGenero(movie,indice);
+        pedirDuracion(movie,indice);
+        //set_EMovie_duracion(movie,111,indice);
+        //set_EMovie_puntaje(movie,9,indice);
+        pedirDescripcion(movie,indice);
+        pedirPuntaje(movie, indice);
+        pedirLink(movie, indice);
 
         if(set_EMovie_estado(movie,1,indice)==1){set_EMovie_estado(movie,1,indice);}
             else return 0;
 
         if(set_EMovie_id(movie,100+indice,indice)==1){set_EMovie_id(movie,100+indice,indice);}
             else return 0;
+        printf("\n DURACION: %d\n",movie[indice].duracion);
+        printf("\n PUNTAJE: %d\n",movie[indice].puntaje);
+        system("pause");
 
 
-    }else return -1;
+    } else printf("\n\nLO SIENTO - NO HAY ESPACIO LIBRE EN MOMERIA PARA CARGAR OTRO REGISTRO. BORRE ALGUNO Y VUELVA A INTENTAR\n\n");
 
 }
 
