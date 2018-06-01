@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 #include "funciones.h"
 
 
@@ -9,7 +10,7 @@
 
 int ValidarEntero(int min,int max,int dato)
 {
-    if(dato > min && dato < max)
+    if((dato+1) > min && (dato-1) < max)
         {
             return dato;
         }
@@ -98,9 +99,8 @@ int pedirPuntaje(EMovie* movie,int indice)
         consulta(auxp,20);
         p = stringAenteroPositivo(auxp);
     }
-    printf("ESTO ES LO QUE INGRESA POR PUNTAJE: %d INDICE %d\n",p,indice);system("pause");
-    set_EMovie_duracion(movie,p,indice);
-    printf("LEo lo ingresado desde la estructura: %d indice: %d\n",movie[indice].puntaje,indice);system("pause");
+    set_EMovie_puntaje(movie,p,indice);
+
 }
 int pedirLink(EMovie* movie,int indice)
 {
@@ -111,6 +111,7 @@ int pedirLink(EMovie* movie,int indice)
     else return 0;
 
 }
+
 // INICIALIZAR Y BUSQUEDA DE ESTADO LIBRE
 
 int buscaEstadoLibre (EMovie* lista)
@@ -119,7 +120,7 @@ int buscaEstadoLibre (EMovie* lista)
     while (get_EMovie_estado(lista,i) && i < CANTIDAD)
     {
         i++;
-        if (i==20)
+        if (i==CANTIDAD)
         {
             return -1;
         }
@@ -135,6 +136,34 @@ void inicializarLista(EMovie* lista)
         set_EMovie_estado(lista,0,i);
     }
 
+}
+
+int hayRegistro(EMovie* lista) // recorre la estructura en busca de registros validos, 1 si hay, 0 si esta vacia
+{
+    int i=0;
+    while (!get_EMovie_estado(lista,i) && i < CANTIDAD)
+    {
+        i++;
+        if (i==CANTIDAD)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int buscarxId(EMovie* movie,int id)
+{
+    for(int a=0;a<CANTIDAD;a++)
+    {
+        int id_a=get_EMovie_id(movie,a);
+
+        if(id_a==id){return a;}
+    }
+
+    printf("\n\n EL ID INGRESADO NO ES VALIDO. NO SE BORRARA NINGUN REGISTRO\n");
+    system("pause");
+    return -1;
 }
 
 
@@ -269,24 +298,22 @@ int get_EMovie_id(EMovie* lista, int posicion)
 
 void ListarPeliculas(EMovie* movie)
 {
+    printf("\nTITULO\t\tGENERO\t\t\MIN\t\tCAL\t\tID\n");
+    printf("\===================================================================\n\n");
 
     for(int i=0;i<CANTIDAD;i++)
     {
         if(get_EMovie_estado(movie,i)==1)
         {
-            char t[20];
-            char g[20];
-            char d[51];
+            char t[30];
+            char g[30];
             int du,pun,id;
-
-            get_EMovie_titulo(movie,i,t);printf("Titulo: %s\n",t);
-            get_EMovie_genero(movie,i,g);printf("Genero: %s\n",g);
-            get_EMovie_descripcion(movie,i,d);printf("Descripcion: %s\n",d);
-            du =get_EMovie_duracion(movie,i);printf("Duracion: %d\n",du);
-            pun=get_EMovie_puntaje(movie,i);printf("Calificacion: %d\n",pun);
-            id=get_EMovie_id(movie,i);printf("ID: %d\n\n",id);
+            get_EMovie_titulo(movie,i,t);
+            get_EMovie_genero(movie,i,g);
 
 
+
+            printf("%s\t\t%s\t\t%d\t\t%d\t\t%d\n",t,g,get_EMovie_duracion(movie,i),get_EMovie_puntaje(movie,i),get_EMovie_id(movie,i));
 
         }
     }
@@ -303,8 +330,6 @@ int agregarPelicula(EMovie* movie)
         pedirTitulo(movie,indice);
         pedirGenero(movie,indice);
         pedirDuracion(movie,indice);
-        //set_EMovie_duracion(movie,111,indice);
-        //set_EMovie_puntaje(movie,9,indice);
         pedirDescripcion(movie,indice);
         pedirPuntaje(movie, indice);
         pedirLink(movie, indice);
@@ -314,15 +339,99 @@ int agregarPelicula(EMovie* movie)
 
         if(set_EMovie_id(movie,100+indice,indice)==1){set_EMovie_id(movie,100+indice,indice);}
             else return 0;
-        printf("\n DURACION: %d\n",movie[indice].duracion);
-        printf("\n PUNTAJE: %d\n",movie[indice].puntaje);
-        system("pause");
+
 
 
     } else printf("\n\nLO SIENTO - NO HAY ESPACIO LIBRE EN MOMERIA PARA CARGAR OTRO REGISTRO. BORRE ALGUNO Y VUELVA A INTENTAR\n\n");
 
 }
 
-//int borrarPelicula(EMovie* movie)
+int borrarPelicula(EMovie* movie)
+{
+    // verificar que exita algo para borrar,sino no hacer nada
+
+    if(hayRegistro(movie))
+    {
+        system("cls");
+        char dato[10];
+        int id;
+        ListarPeliculas(movie);
+
+        printf("\n\n\tIngrese id de pel%ccula a borrar: ",ii);
+        consulta(dato,10);
+        id = stringAenteroPositivo(dato);
+        if(id!=-1 && ValidarEntero(0,2001,id)!=-1)
+        {
+            int indice = buscarxId(movie,id);
+            if(indice!=-1){set_EMovie_estado(movie,0,indice);}
+            else {printf("\nID INEXISTENTE\n");system("pause");return 0;}
+        }else {printf("\n\nID INVALIDO\n");system("pause");}
+
+    }
+    else
+    {
+        printf("\nNO ES POSIBLE EJECUTAR LA ACCION REQUERIDA PORQUE NO HAY ELEMENTOS EN LA BASE DE DATOS\n\n");
+        system("pause");
+    }
+
+
+}
+
+int modificarPelicula(EMovie* movie)
+{
+    if(hayRegistro(movie))
+    {
+    system("cls");
+    ListarPeliculas(movie);
+    printf("\n\nIngrese id de pel%ccula a modificar: ",ii);
+    char dato[10];
+    int id;
+    consulta(dato,10);
+    id = stringAenteroPositivo(dato);
+    if(id!=-1 && ValidarEntero(0,2001,id)!=-1)
+        {
+            int indice = buscarxId(movie,id);
+            if(indice!=-1)
+            {   int opcion;
+                char salir = 'n';
+                while(salir = 'n')
+                {
+                    system("cls");
+                    printf("Ingrese campo a modificar:\n1-Titulo\n2-G%cnero\n3-Duraci%cn\n4-Descripci%cn\n5-Puntaje\n6-Link Imagen\n7-Salir",ee,oo,oo);
+                    opcion=getch();
+                    switch(opcion)
+                    {
+                    case 1:
+                        pedirTitulo(movie,indice);
+                    case 2:
+                        pedirGenero(movie,indice);
+                    case 3:
+                        pedirDuracion(movie,indice);
+                    case 4:
+                        pedirDescripcion(movie,indice);
+                    case 5:
+                        pedirPuntaje(movie,indice);
+                    case 6:
+                        pedirLink(movie,indice);
+                    case 7:
+                        salir='s';
+                    }
+                }
+
+
+            }
+            else {printf("\nID INEXISTENTE\n");system("pause");return 0;}
+        }else {printf("\n\nID INVALIDO\n");system("pause");}
+
+    }
+    else
+    {
+        printf("\nNO ES POSIBLE EJECUTAR LA ACCION REQUERIDA PORQUE NO HAY ELEMENTOS EN LA BASE DE DATOS\n\n");
+        system("pause");
+    }
+
+}
+
 //void generarPagina(EMovie* lista, char* nombre)
+
 

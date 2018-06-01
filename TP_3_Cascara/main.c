@@ -14,13 +14,16 @@ int main()
 
     while(seguir=='s')
     {
-        printf("1- Agregar pel%ccula\n",ii);
-        printf("2- Borrar pel%ccula\n",ii);
-        printf("3- Modificar pel%ccula\n",ii);
-        printf("4- Generar p%cgina web\n",aa);
-        printf("5- Listar pel%cculas\n",ii);
-        printf("6- Salir\n");
-        printf("7- Listar\n");
+        system("cls");
+        printf("\tBASE DE DATOS DE PELICULAS\n");
+        printf("\t==========================\n");
+        printf("\n\n\n\t1- Agregar pel%ccula\n",ii);
+        printf("\t2- Borrar pel%ccula\n",ii);
+        printf("\t3- Modificar pel%ccula\n",ii);
+        printf("\t4- Generar p%cgina web\n",aa);
+        printf("\t5- Listar pel%cculas\n",ii);
+        printf("\t6- Listar pel%cculas\n",ii);
+        printf("\t7- Salir\n");
 
         scanf("%d",&opcion);
 
@@ -30,18 +33,21 @@ int main()
                 agregarPelicula(lista);
                 break;
             case 2:
+                borrarPelicula(lista);
                 break;
             case 3:
+                modificarPelicula(lista);
                break;
             case 4:
                break;
             case 5:
                break;
             case 6:
-                seguir = 'n';
+                ListarPeliculas(lista);
+                system("pause");
                 break;
             case 7:
-                ListarPeliculas(lista);
+                seguir = 'n';
                 break;
         }
     }

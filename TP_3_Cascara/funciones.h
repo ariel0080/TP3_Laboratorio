@@ -13,12 +13,12 @@
 
 
 typedef struct{
-    char titulo[20]; //
-    char genero[20]; //
-    int duracion;//
-    char descripcion[50]; //
-    int puntaje;//
-    char linkImagen[50]; //
+    char titulo[20];
+    char genero[20];
+    int duracion;
+    char descripcion[50];
+    int puntaje;
+    char linkImagen[50];
     int estado;
     int id;
 }EMovie;
@@ -102,6 +102,9 @@ int get_EMovie_id(EMovie*,int);
 // LISTADO DE LAS PELICULAS EN MEMORIA
 
 void ListarPeliculas(EMovie*);
-
+int borrarPelicula(EMovie*);
+int hayRegistro(EMovie*);
+int buscarxId(EMovie*,int);
+int modificarPelicula(EMovie*);
 
 #endif
