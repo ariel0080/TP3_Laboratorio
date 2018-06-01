@@ -43,14 +43,19 @@ int main()
                 guardarArchivo(lista);
                break;
             case 4:
-                printf("Peliculas: %d",contarPeliculas(lista));system("pause");
+                system("cls");
+                printf("Ingrese nombre del archivo .html: \n");
+                fflush(stdin);
+                char n[300]={};
+                scanf("%s",n);
+                crearHtml(lista,n);
                break;
             case 5:
                 ListarPeliculas(lista);
+                printf("\nPeliculas: %d\n\n",contarPeliculas(lista));
                 system("pause");
                 break;
             case 6:
-                crearHtml(lista);
                 seguir = 'n';
                 break;
 

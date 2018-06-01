@@ -50,17 +50,17 @@ int stringAenteroPositivo(char* dato) // DEVUELVE EL ENTERO SI ESTA BIEN O -1 SI
 }
 int pedirTitulo(EMovie* movie,int indice) //todas devuelven 0 si esta ok, -1 si hay error
 {
-    char aux[21];
+    char aux[100];
     printf("\nIngrese t%ctulo de la pel%ccula: ",ii,ii);
-    consulta(aux,50);
+    consulta(aux,100);
     if(set_EMovie_titulo(movie,aux,indice)==1){set_EMovie_titulo(movie,aux,indice);}
     else return 0;
 }
 int pedirGenero(EMovie* movie,int indice)
 {
-    char aux[21];
+    char aux[100];
     printf("\nIngrese g%cnero de la pel%ccula: ",ee,ii);
-    consulta(aux,50);
+    consulta(aux,100);
     if(set_EMovie_genero(movie,aux,indice)==1){set_EMovie_genero(movie,aux,indice);}
     else return 0;
 }
@@ -79,9 +79,9 @@ int pedirDuracion(EMovie* movie,int indice)
 }
 int pedirDescripcion(EMovie* movie,int indice)
 {
-    char aux[51];
+    char aux[200];
     printf("\nIngrese descripci%cn de la pel%ccula: ",oo,ii);
-    consulta(aux,51);
+    consulta(aux,200);
     if(set_EMovie_descripcion(movie,aux,indice)==1){set_EMovie_descripcion(movie,aux,indice);}
     else return 0;
 }
@@ -104,9 +104,9 @@ int pedirPuntaje(EMovie* movie,int indice)
 }
 int pedirLink(EMovie* movie,int indice)
 {
-    char aux[51];
+    char aux[200];
     printf("\nIngrese link de la im%cgen de la pel%ccula: ",aa,ii);
-    consulta(aux,50);
+    consulta(aux,200);
     if(set_EMovie_linkImagen(movie,aux,indice)==1){set_EMovie_linkImagen(movie,aux,indice);}
     else return 0;
 
@@ -315,8 +315,8 @@ void ListarPeliculas(EMovie* movie)
     {
         if(get_EMovie_estado(movie,i)==1)
         {
-            char t[30];
-            char g[30];
+            char t[100];
+            char g[100];
            // int du,pun,id;
             get_EMovie_titulo(movie,i,t);
             get_EMovie_genero(movie,i,g);
@@ -478,20 +478,89 @@ void leerArchivo(EMovie* movie)
 
 }
 
-void crearHtml(EMovie* movie)
+void crearHtml(EMovie* movie,char* nombre)
 {
+    FILE* archivo;
     char inicio[2000]={};
     char fin[500]={};
-    char medio[1000]={};
-    FILE* archivo;
+    //char medio1[200]={};
+    //char medio2[60]={};
+    //char medio3[50]={};
+    //char medio4[50]={};
+    //char medio5[50]={};
+    //char medio6[50]={};
+    //char medio7[50]={};
+    char titulo[100];
+    char genero[100];
+    char descripcion[200];
+    char imagen[200];
+    int duracion,puntaje;
     strcat(inicio,"<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><link href='css/bootstrap.min.css' rel='stylesheet'><link href='css/custom.css' rel='stylesheet'></head><body><div class='container'><div class='row'>");
     strcat(fin,"</div></div><script src='js/jquery-1.11.3.min.js'></script><script src='js/bootstrap.min.js'></script><script src='js/ie10-viewport-bug-workaround.js'></script><script src='js/holder.min.js'></script></body></html>");
-    strcat(medio,"<article class='col-md-4 article-intro'><a href='#'><img class='img-responsive img-rounded' src='1.jpg' alt=''></a><h3><a href='#'>Back to the future</a></h3><ul><li>Genero:Aventura</li><li>Puntaje:86</li><li>Duracion:116</li></ul><p>MODIFIQUE!!!! is accidentally sent thirty years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown, and must make sure his high-school-age parents unite in order to save his own existence.</p></article>");
-    archivo = fopen("index.html","w");
+    archivo = fopen(nombre,"w");
     fprintf(archivo,inicio);
-    fprintf(archivo,medio);
-    fprintf(archivo,medio);
+
+    for(int a=0;a<CANTIDAD;a++)
+    {
+        if(get_EMovie_estado(movie,a)==1)
+        {
+            get_EMovie_titulo(movie,a,titulo);
+            get_EMovie_descripcion(movie,a,descripcion);
+            duracion = get_EMovie_duracion(movie,a);
+            puntaje = get_EMovie_puntaje(movie,a);
+            get_EMovie_genero(movie,a,genero);
+            get_EMovie_linkImagen(movie,a,imagen);
+
+            fprintf(archivo,"<article class='col-md-4 article-intro'>\n");
+            fprintf(archivo,"<a href='#'><img class='img-responsive img-rounded' src='");
+            fprintf(archivo,imagen);
+            fprintf(archivo,"' alt=''></a>\n");
+            fprintf(archivo,"<h3>\n");
+            fprintf(archivo,"<a href='#'>");
+            fprintf(archivo,titulo);
+            fprintf(archivo,"</a>\n");
+            fprintf(archivo,"</h3>\n");
+            fprintf(archivo,"<ul>\n");
+            fprintf(archivo,"<li>Genero:");
+            fprintf(archivo,genero);
+            fprintf(archivo,"</li>\n");
+            fprintf(archivo,"<li>Puntaje:");
+            fprintf(archivo,"%d",puntaje);
+            fprintf(archivo,"</li>\n");
+            fprintf(archivo,"<li>Duracion:");
+            fprintf(archivo,"%d",duracion);
+            fprintf(archivo,"</li>\n");
+            fprintf(archivo,"</ul>\n");
+            fprintf(archivo,"<p>");
+            fprintf(archivo,descripcion);
+            fprintf(archivo,"</p>\n");
+            fprintf(archivo,"</article>\n");
+
+
+        /*
+            strcat(medio1,"<article class='col-md-4 article-intro'><a href='#'><img class='img-responsive img-rounded' src='");
+            fprintf(archivo,medio1);
+            fprintf(archivo,imagen);
+            strcat(medio2,"' alt=''></a><h3><a href='#'>");
+            fprintf(archivo,medio2);
+            fprintf(archivo,titulo);
+            strcat(medio3,"</a></h3><ul><li>Genero:");
+            fprintf(archivo,medio3);
+            fprintf(archivo,genero);
+            strcat(medio4,"</li><li>Puntaje:");
+            fprintf(archivo,medio4);
+            fprintf(archivo,"%d",puntaje);
+            strcat(medio5,"<li>Duracion:");
+            fprintf(archivo,medio5);
+            fprintf(archivo,"%d",duracion);
+            strcat(medio6,"</li></ul><p>");
+            fprintf(archivo,medio6);
+            fprintf(archivo,descripcion);
+            strcat(medio7,"</p></article>");
+            fprintf(archivo,medio7);*/
+        }
+    }
     fprintf(archivo,fin);
     fclose(archivo);
-    // http://ia.media-imdb.com/images/M/MV5BMjA5NTYzMDMyM15BMl5BanBnXkFtZTgwNjU3NDU2MTE@._V1_UX182_CR0,0,182,268_AL_
+
 }

@@ -13,12 +13,12 @@
 
 
 typedef struct{
-    char titulo[20];
-    char genero[20];
+    char titulo[100];
+    char genero[100];
     int duracion;
-    char descripcion[50];
+    char descripcion[200];
     int puntaje;
-    char linkImagen[50];
+    char linkImagen[200];
     int estado;
     int id;
 }EMovie;
@@ -99,5 +99,5 @@ int modificarPelicula(EMovie*);
 
 void guardarArchivo(EMovie*);
 void leerArchivo(EMovie*);
-void crearHtml(EMovie*);
+void crearHtml(EMovie*,char*);
 #endif
