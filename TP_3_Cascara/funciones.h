@@ -25,19 +25,7 @@ typedef struct{
 
 
 
-/**
- *  Agrega una pelicula al archivo binario
- *  @param movie la estructura a ser agregada al archivo
- *  @return retorna 1 o 0 de acuerdo a si pudo agregar la pelicula o no
- */
-int agregarPelicula(EMovie* movie);
 
-/**
- *  Borra una pelicula del archivo binario
- *  @param movie la estructura a ser eliminada al archivo
- *  @return retorna 1 o 0 de acuerdo a si pudo eliminar la pelicula o no
- */
-int borrarPelicula(EMovie* movie);
 
 /**
  *  Genera un archivo html a partir de las peliculas cargadas en el archivo binario.
@@ -53,7 +41,7 @@ void generarPagina(EMovie* lista, char* nombre);
  *
  */
 int buscaEstadoLibre (EMovie*);
-
+int contarPeliculas(EMovie*);
 void inicializarLista(EMovie*);
 
 // FUNCIONES PARA TOMAR DATOS
@@ -107,4 +95,9 @@ int hayRegistro(EMovie*);
 int buscarxId(EMovie*,int);
 int modificarPelicula(EMovie*);
 
+// ARCHIVOS
+
+void guardarArchivo(EMovie*);
+void leerArchivo(EMovie*);
+void crearHtml(EMovie*);
 #endif

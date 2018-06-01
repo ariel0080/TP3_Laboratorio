@@ -138,7 +138,7 @@ void inicializarLista(EMovie* lista)
 
 }
 
-int hayRegistro(EMovie* lista) // recorre la estructura en busca de registros validos, 1 si hay, 0 si esta vacia
+int hayRegistro(EMovie* lista) // recorre la estructura en busca de registros validos, 1  si hay, 0 si esta vacia
 {
     int i=0;
     while (!get_EMovie_estado(lista,i) && i < CANTIDAD)
@@ -167,6 +167,16 @@ int buscarxId(EMovie* movie,int id)
 }
 
 
+int contarPeliculas(EMovie* movie)
+{
+    int i=0;
+    for(int a=0;a<CANTIDAD;a++)
+    {
+        if(get_EMovie_estado(movie,a)==1){i++;}
+    }
+    return i;
+
+}
 //SETTERS
 
 int set_EMovie_titulo(EMovie* lista, char* titulo,int posicion)
@@ -298,8 +308,8 @@ int get_EMovie_id(EMovie* lista, int posicion)
 
 void ListarPeliculas(EMovie* movie)
 {
-    printf("\nTITULO\t\tGENERO\t\t\MIN\t\tCAL\t\tID\n");
-    printf("\===================================================================\n\n");
+    printf("\nTITULO\t\tGENERO\t\tMIN\t\tCAL\t\tID\n");
+    printf("===================================================================\n\n");
 
     for(int i=0;i<CANTIDAD;i++)
     {
@@ -307,7 +317,7 @@ void ListarPeliculas(EMovie* movie)
         {
             char t[30];
             char g[30];
-            int du,pun,id;
+           // int du,pun,id;
             get_EMovie_titulo(movie,i,t);
             get_EMovie_genero(movie,i,g);
 
@@ -317,6 +327,7 @@ void ListarPeliculas(EMovie* movie)
 
         }
     }
+    printf("\n\n");
 }
 
 // FUNCIONES DEL MENU
@@ -379,6 +390,7 @@ int borrarPelicula(EMovie* movie)
 
 int modificarPelicula(EMovie* movie)
 {
+
     if(hayRegistro(movie))
     {
     system("cls");
@@ -393,28 +405,36 @@ int modificarPelicula(EMovie* movie)
             int indice = buscarxId(movie,id);
             if(indice!=-1)
             {   int opcion;
-                char salir = 'n';
-                while(salir = 'n')
+                char seguir = 's';
+                while(seguir == 's')
                 {
                     system("cls");
-                    printf("Ingrese campo a modificar:\n1-Titulo\n2-G%cnero\n3-Duraci%cn\n4-Descripci%cn\n5-Puntaje\n6-Link Imagen\n7-Salir",ee,oo,oo);
-                    opcion=getch();
+                    printf("\nIngrese campo a modificar:\n\n\n1-Titulo\n2-G%cnero\n3-Duraci%cn\n4-Descripci%cn\n5-Puntaje\n6-Link Imagen\n7-Salir\n\n",ee,oo,oo);
+                    fflush(stdin);
+                    scanf("%d",&opcion);
                     switch(opcion)
                     {
                     case 1:
                         pedirTitulo(movie,indice);
+                        break;
                     case 2:
                         pedirGenero(movie,indice);
+                        break;
                     case 3:
                         pedirDuracion(movie,indice);
+                        break;
                     case 4:
                         pedirDescripcion(movie,indice);
+                        break;
                     case 5:
                         pedirPuntaje(movie,indice);
+                        break;
                     case 6:
                         pedirLink(movie,indice);
+                        break;
                     case 7:
-                        salir='s';
+                        seguir='n';
+                        break;
                     }
                 }
 
@@ -434,4 +454,44 @@ int modificarPelicula(EMovie* movie)
 
 //void generarPagina(EMovie* lista, char* nombre)
 
+//ARCHIVOS
 
+void guardarArchivo(EMovie*  movie)
+
+{
+    int cantidadPelis=contarPeliculas(movie);
+    FILE* miArchivo;
+    miArchivo = fopen("peliculas.dat","wb");
+    fwrite(&cantidadPelis,sizeof(int),1,miArchivo);
+    fwrite(movie,sizeof(EMovie),cantidadPelis,miArchivo);
+    fclose(miArchivo);
+}
+
+void leerArchivo(EMovie* movie)
+{
+    int d;
+    FILE* miArchivo;
+    miArchivo = fopen("peliculas.dat","rb");
+    fread(&d,sizeof(int),1,miArchivo);
+    fread(movie,sizeof(EMovie),d,miArchivo);
+
+
+}
+
+void crearHtml(EMovie* movie)
+{
+    char inicio[2000]={};
+    char fin[500]={};
+    char medio[1000]={};
+    FILE* archivo;
+    strcat(inicio,"<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><link href='css/bootstrap.min.css' rel='stylesheet'><link href='css/custom.css' rel='stylesheet'></head><body><div class='container'><div class='row'>");
+    strcat(fin,"</div></div><script src='js/jquery-1.11.3.min.js'></script><script src='js/bootstrap.min.js'></script><script src='js/ie10-viewport-bug-workaround.js'></script><script src='js/holder.min.js'></script></body></html>");
+    strcat(medio,"<article class='col-md-4 article-intro'><a href='#'><img class='img-responsive img-rounded' src='1.jpg' alt=''></a><h3><a href='#'>Back to the future</a></h3><ul><li>Genero:Aventura</li><li>Puntaje:86</li><li>Duracion:116</li></ul><p>MODIFIQUE!!!! is accidentally sent thirty years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown, and must make sure his high-school-age parents unite in order to save his own existence.</p></article>");
+    archivo = fopen("index.html","w");
+    fprintf(archivo,inicio);
+    fprintf(archivo,medio);
+    fprintf(archivo,medio);
+    fprintf(archivo,fin);
+    fclose(archivo);
+    // http://ia.media-imdb.com/images/M/MV5BMjA5NTYzMDMyM15BMl5BanBnXkFtZTgwNjU3NDU2MTE@._V1_UX182_CR0,0,182,268_AL_
+}
