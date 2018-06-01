@@ -483,13 +483,7 @@ void crearHtml(EMovie* movie,char* nombre)
     FILE* archivo;
     char inicio[2000]={};
     char fin[500]={};
-    //char medio1[200]={};
-    //char medio2[60]={};
-    //char medio3[50]={};
-    //char medio4[50]={};
-    //char medio5[50]={};
-    //char medio6[50]={};
-    //char medio7[50]={};
+
     char titulo[100];
     char genero[100];
     char descripcion[200];
@@ -537,27 +531,6 @@ void crearHtml(EMovie* movie,char* nombre)
             fprintf(archivo,"</article>\n");
 
 
-        /*
-            strcat(medio1,"<article class='col-md-4 article-intro'><a href='#'><img class='img-responsive img-rounded' src='");
-            fprintf(archivo,medio1);
-            fprintf(archivo,imagen);
-            strcat(medio2,"' alt=''></a><h3><a href='#'>");
-            fprintf(archivo,medio2);
-            fprintf(archivo,titulo);
-            strcat(medio3,"</a></h3><ul><li>Genero:");
-            fprintf(archivo,medio3);
-            fprintf(archivo,genero);
-            strcat(medio4,"</li><li>Puntaje:");
-            fprintf(archivo,medio4);
-            fprintf(archivo,"%d",puntaje);
-            strcat(medio5,"<li>Duracion:");
-            fprintf(archivo,medio5);
-            fprintf(archivo,"%d",duracion);
-            strcat(medio6,"</li></ul><p>");
-            fprintf(archivo,medio6);
-            fprintf(archivo,descripcion);
-            strcat(medio7,"</p></article>");
-            fprintf(archivo,medio7);*/
         }
     }
     fprintf(archivo,fin);

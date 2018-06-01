@@ -16,6 +16,8 @@ int main()
 
     while(seguir=='s')
     {
+        fflush(stdin);
+        opcion=0;
         system("cls");
         printf("\tBASE DE DATOS DE PELICULAS\n");
         printf("\t==========================\n");
@@ -27,6 +29,7 @@ int main()
         printf("\t6- Salir\n");
 
         scanf("%d",&opcion);
+        if(opcion)
 
         switch(opcion)
         {
@@ -44,10 +47,11 @@ int main()
                break;
             case 4:
                 system("cls");
-                printf("Ingrese nombre del archivo .html: \n");
+                printf("Ingrese nombre del archivo: \n");
                 fflush(stdin);
                 char n[300]={};
                 scanf("%s",n);
+                strcat(n,".html");
                 crearHtml(lista,n);
                break;
             case 5:
@@ -59,6 +63,10 @@ int main()
                 seguir = 'n';
                 break;
 
+            default:
+                printf("\nLa opci%cn ingresada no es v%clida\n\n",oo,aa);
+                system("pause");
+                break;
 
         }
     }
